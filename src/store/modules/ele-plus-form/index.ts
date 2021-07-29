@@ -78,9 +78,9 @@ export interface FormItemConfig {
 }
 export interface Form {
   // 表单数据对象
-  model?: ObjectConstructor;
+  model?: string;
   // 表单域标签的位置
-  labelPosition?: StringConstructor;
+  labelPosition?: string;
   ref?: string;
 }
 interface State {
@@ -90,19 +90,27 @@ interface State {
   // 模板代码
   srcCode: string;
   formAttribute: Form;
+  clickedIndex: number;
 }
 const elePlusForm: Module<State, RootState> = {
   namespaced: true,
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   state: () => ({
+    clickedIndex: -1,
     // 表单资源
     formAssets,
     // 当前表单所有项
     formItems: [],
     // 当前操作的表单项
-    currentFormItem: {} as FormItemConfig,
+    currentFormItem: {
+      props: {},
+    } as FormItemConfig,
     // 表单form属性 参考element Form Attributes
-    formAttribute: {} as Form,
+    formAttribute: {
+      model: "defaultFormObj",
+      ref: "",
+      labelPosition: "left",
+    } as Form,
     srcCode: "",
   }),
   mutations: {
@@ -111,17 +119,26 @@ const elePlusForm: Module<State, RootState> = {
       state.currentFormItem = newFormItem;
       this.commit("elePlusForm/genFromTemplate");
     },
-    deleteFormItem(state, index) {
+    deleteFormItem(this: Store<State>, state, index) {
       state.formItems.splice(index, 1);
+      this.commit("elePlusForm/genFromTemplate");
     },
     setFormAttribute(this: Store<State>, state, payload) {
       state.formAttribute = payload;
       this.commit("elePlusForm/genFromTemplate");
     },
+    setClickedIndex(state: State, index) {
+      state.clickedIndex = index;
+    },
+    updateFormItemAttr(state: State, newFormItem) {
+      const idx = state.clickedIndex;
+      state.formItems.splice(idx, 1, newFormItem);
+    },
     resetForm(this: Store<State>, state) {
       state.formItems = [];
       state.srcCode = "";
       state.formAttribute = {};
+      state.currentFormItem = {} as FormItemConfig;
     },
     // 生成模板代码
     genFromTemplate(this: Store<State>, state) {

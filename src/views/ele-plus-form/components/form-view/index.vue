@@ -2,7 +2,7 @@
   <div class="w-1/2 min-h-full">
     <el-card class="mb-6 min-h-1/2">
       <template #header>
-        <el-button type="text"> 生成代码 </el-button>
+        <el-button type="text" @click="genTemplateCode"> 生成代码 </el-button>
         <el-button type="text" @click="resetForm"> 重置 </el-button>
       </template>
       <div v-if="formItems.length === 0">请选择左侧表单元素</div>
@@ -12,7 +12,9 @@
             :class="{ selectedItemIndex: index === selectedItemIndex }"
             @click="handleFormItem(index, item)"
           >
-            <el-form-item :label="(item && item.props.label) || '表单label'">
+            <el-form-item
+              :label="(item.props && item.props.label) || '表单label'"
+            >
               <component :is="item.type" v-if="item" style="width: 90%" />
             </el-form-item>
             <el-button
@@ -47,12 +49,16 @@ export default defineComponent({
     const selectedItemIndex = ref(0);
     const handleFormItem = (index, formItem) => {
       selectedItemIndex.value = index;
+      store.commit("elePlusForm/setClickedIndex", index);
     };
     const deleteFormItem = (index) => {
       store.commit("elePlusForm/deleteFormItem", index);
     };
     const resetForm = () => {
       store.commit("elePlusForm/resetForm");
+    };
+    const genTemplateCode = () => {
+      store.commit("elePlusForm/genFromTemplate");
     };
     return {
       form,
@@ -61,6 +67,7 @@ export default defineComponent({
       handleFormItem,
       deleteFormItem,
       resetForm,
+      genTemplateCode,
     };
   },
 });

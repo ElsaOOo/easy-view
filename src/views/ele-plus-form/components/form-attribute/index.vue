@@ -24,13 +24,13 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const form = reactive({
-      formObj: "defaultFormObj",
-      ref: "defaultRef",
+      model: "defaultFormObj",
+      ref: "",
       labelPosition: "left",
     });
 
     watch(form, (newValue) => {
-      store.commit("elePlusForm/", {
+      store.commit("elePlusForm/setFormAttribute", {
         ...newValue,
       });
     });

@@ -1,12 +1,21 @@
 import genFormItemCode from "./snippetForm";
 
 export const _genFormItems = (model, formItems) => {
+  console.log("formItems", formItems);
+
   return formItems
     .map((item) => {
       const func = genFormItemCode(item.type);
       return func(model, item.props.label, item.props.value);
     })
     .join("\n");
+};
+
+const getRef = (value: string) => {
+  if (value) {
+    return `ref=${value}`;
+  }
+  return "";
 };
 
 export const genVueFileWrapper = ({ model, ref, formItems }) => {

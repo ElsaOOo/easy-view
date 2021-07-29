@@ -1,6 +1,6 @@
 <template>
   <div class="h-2/6">
-    <monaco-editor id="code-template" :value="value" />
+    <monaco-editor editorId="code-template" :value="value" />
   </div>
 </template>
 

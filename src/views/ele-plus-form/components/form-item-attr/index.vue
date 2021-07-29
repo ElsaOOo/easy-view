@@ -17,14 +17,14 @@
 
     <el-form-item label="label">
       <el-input
-        v-model.trim="formItemAttribute.label"
+        v-model.trim="formItemAttribute.props.label"
         placeholder="请输入label"
         @change="setFormItemAttribute"
       />
     </el-form-item>
     <el-form-item label="value">
       <el-input
-        v-model.trim="formItemAttribute.value"
+        v-model.trim="formItemAttribute.props.value"
         placeholder="请输入value"
         @change="setFormItemAttribute"
       />
@@ -57,14 +57,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed } from "vue";
+import { defineComponent, computed } from "vue";
 import { useStore } from "vuex";
 
 export default defineComponent({
   name: "form-item-attr",
   setup() {
     const store = useStore();
-    const formItemElement = reactive({});
+    const formItemAttribute = computed(
+      () => store.state.elePlusForm.currentFormItem
+    );
     const itemsList = store.state.elePlusForm.formAssets.reduce((acc, cur) => {
       const temp = cur.specs.map((item) => ({
         type: item.type,
@@ -74,12 +76,17 @@ export default defineComponent({
       return acc;
     }, []);
 
+    const setFormItemAttribute = () => {
+      console.log(formItemAttribute);
+
+      store.commit("elePlusForm/updateFormItemAttr", {
+        ...formItemAttribute,
+      });
+    };
     return {
-      formItemAttribute: computed(
-        () => store.state.elePlusForm.currentFormItem
-      ),
-      formItemElement,
+      formItemAttribute,
       itemsList,
+      setFormItemAttribute,
     };
   },
 });

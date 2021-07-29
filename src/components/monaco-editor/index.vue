@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" class="monaco-editor"></div>
+  <div :id="editorId" class="monaco-editor"></div>
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
 export default defineComponent({
   props: {
-    id: {
+    editorId: {
       type: String,
       default: "editor",
     },
@@ -18,18 +18,20 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const { id, value } = toRefs(props);
+    const { editorId, value } = toRefs(props);
     let editor = reactive(null);
     watch(value, (newValue) => {
       editor.setValue(newValue);
     });
     onMounted(() => {
-      // eslint-disable-next-line no-unused-vars
-      editor = monaco.editor.create(document.getElementById(id.value), {
-        value: value.value,
-        language: "javvascript",
-        theme: "vs-dark",
-      });
+      if (document.getElementById(editorId.value)) {
+        // eslint-disable-next-line no-unused-vars
+        editor = monaco.editor.create(document.getElementById(editorId.value), {
+          value: value.value,
+          language: "javvascript",
+          theme: "vs-dark",
+        });
+      }
     });
     return {};
   },
