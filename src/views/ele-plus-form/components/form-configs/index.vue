@@ -5,7 +5,7 @@
         <form-item-attr />
       </el-tab-pane>
       <el-tab-pane label="表单属性" name="form">
-        <!-- <FormAttr style="margin-bottom: 10px" /> -->
+        <form-attribute />
       </el-tab-pane>
     </el-tabs>
   </el-card>
@@ -14,11 +14,13 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import FormItemAttr from "../form-item-attr/index.vue";
+import FormAttribute from "../form-attribute/index.vue";
 
 export default defineComponent({
   name: "form-configs",
   components: {
     FormItemAttr,
+    FormAttribute,
   },
   setup() {
     const activeName = ref("item");

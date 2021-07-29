@@ -35,6 +35,8 @@
     "eslint-plugin-vue": "^7.0.0",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
+    "monaco-editor": "^0.26.1",
+    "monaco-editor-webpack-plugin": "^4.1.1",
     "postcss": "^7.0.36",
     "prettier": "^2.2.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7",

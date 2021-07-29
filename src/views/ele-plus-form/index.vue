@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-between flex-1">
+  <div class="flex justify-between flex-1 h-full">
     <form-item-assets />
     <form-view />
     <form-configs />

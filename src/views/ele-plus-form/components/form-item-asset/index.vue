@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "vuex";
-import { FormItemConfig } from "@/store/modules/ele-plus-form";
+import { FormItemConfig } from "@/store/modules/ele-plus-form/index";
 
 export default defineComponent({
   setup() {

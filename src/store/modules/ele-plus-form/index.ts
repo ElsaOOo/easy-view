@@ -1,5 +1,6 @@
-import { Module } from "vuex";
-import { RootState } from "../types";
+import { Module, Store } from "vuex";
+import { genVueFileWrapper } from "./snippetVue3";
+import { RootState } from "../../types";
 const defaultProps = {
   label: "",
   value: "",
@@ -75,10 +76,20 @@ export interface FormItemConfig {
   title: string;
   props: Record<string, any>;
 }
+export interface Form {
+  // 表单数据对象
+  model?: ObjectConstructor;
+  // 表单域标签的位置
+  labelPosition?: StringConstructor;
+  ref?: string;
+}
 interface State {
   formItems: FormItemConfig[];
   formAssets: FormAssets;
   currentFormItem: FormItemConfig;
+  // 模板代码
+  srcCode: string;
+  formAttribute: Form;
 }
 const elePlusForm: Module<State, RootState> = {
   namespaced: true,
@@ -90,14 +101,36 @@ const elePlusForm: Module<State, RootState> = {
     formItems: [],
     // 当前操作的表单项
     currentFormItem: {} as FormItemConfig,
+    // 表单form属性 参考element Form Attributes
+    formAttribute: {} as Form,
+    srcCode: "",
   }),
   mutations: {
-    addFormItem(state, newFormItem) {
+    addFormItem(this: Store<State>, state, newFormItem) {
       state.formItems.push(newFormItem);
       state.currentFormItem = newFormItem;
+      this.commit("elePlusForm/genFromTemplate");
     },
     deleteFormItem(state, index) {
       state.formItems.splice(index, 1);
+    },
+    setFormAttribute(this: Store<State>, state, payload) {
+      state.formAttribute = payload;
+      this.commit("elePlusForm/genFromTemplate");
+    },
+    resetForm(this: Store<State>, state) {
+      state.formItems = [];
+      state.srcCode = "";
+      state.formAttribute = {};
+    },
+    // 生成模板代码
+    genFromTemplate(this: Store<State>, state) {
+      const data = {
+        ref: state.formAttribute.ref,
+        model: state.formAttribute.model,
+        formItems: state.formItems,
+      };
+      state.srcCode = genVueFileWrapper(data);
     },
   },
   actions: {},

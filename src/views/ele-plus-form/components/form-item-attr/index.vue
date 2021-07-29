@@ -64,7 +64,6 @@ export default defineComponent({
   name: "form-item-attr",
   setup() {
     const store = useStore();
-    // const formItemAttribute = reactive({});
     const formItemElement = reactive({});
     const itemsList = store.state.elePlusForm.formAssets.reduce((acc, cur) => {
       const temp = cur.specs.map((item) => ({
@@ -74,7 +73,6 @@ export default defineComponent({
       acc = acc.concat(temp);
       return acc;
     }, []);
-    console.log(itemsList);
 
     return {
       formItemAttribute: computed(
