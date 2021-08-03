@@ -1,29 +1,17 @@
-# lie-flat
+<h1 align="center">Welcome to easy-view 👋</h1>
 
-## Project setup
+> element-ui 的模板代码生成的工具
 
-```
-npm install
-```
+<img src="/Users/yezi/Resico/projects/easy-view/images/form-edit.jpg" alt="form-edit" style="zoom: 30%;" />
 
-### Compiles and hot-reloads for development
+### 参考项目
 
-```
-npm run serve
-```
+- https://github.com/Liugq5713/vue-element-nocode-admin
 
-### Compiles and minifies for production
+本项目的技术栈
 
-```
-npm run build
-```
-
-### Lints and fixes files
-
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- vue3
+- typescript
+- element-plus
+- tailwindcss
+- monaco-editor
