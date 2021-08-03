@@ -2,7 +2,7 @@
 
 > element-ui 的模板代码生成的工具
 
-<img src="/Users/yezi/Resico/projects/easy-view/images/form-edit.jpg" alt="form-edit" style="zoom: 30%;" />
+<img src="./images/form-edit.jpg" alt="form-edit" style="zoom: 30%;" />
 
 ### 参考项目
 
