@@ -7,10 +7,15 @@
       <el-input v-model.trim="form.ref" placeholder="表单的Ref值" />
     </el-form-item>
     <el-form-item label="表单域标签的位置">
-      <el-input
+      <!-- <el-input
         v-model.trim="form.labelPosition"
         placeholder="表单域标签的位置"
-      />
+      /> -->
+      <el-radio-group v-model="form.labelPosition" size="small">
+        <el-radio-button label="left">左对齐</el-radio-button>
+        <el-radio-button label="right">右对齐</el-radio-button>
+        <el-radio-button label="top">顶部对齐</el-radio-button>
+      </el-radio-group>
     </el-form-item>
   </el-form>
 </template>

@@ -6,7 +6,12 @@
         <el-button type="text" @click="resetForm"> 重置 </el-button>
       </template>
       <div v-if="formItems.length === 0">请选择左侧表单元素</div>
-      <el-form :model="form" label-width="140px" v-else>
+      <el-form
+        :model="form"
+        label-width="140px"
+        v-else
+        :label-position="formAttribute.labelPosition"
+      >
         <div v-for="(item, index) in formItems" :key="index">
           <div
             :class="{ selectedItemIndex: index === selectedItemIndex }"
@@ -34,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, computed, ref } from "vue";
+import { defineComponent, reactive, computed, ref, watch } from "vue";
 import { useStore } from "vuex";
 import TemplateCode from "../template-code/index.vue";
 
@@ -46,9 +51,21 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const form = reactive({});
+    const formAttribute = ref({});
     const selectedItemIndex = ref(0);
+    watch(
+      () => store.state.elePlusForm.clickedIndex,
+      (val) => {
+        selectedItemIndex.value = val;
+      }
+    );
+    watch(
+      () => store.state.elePlusForm.formAttribute,
+      (value) => {
+        formAttribute.value = { ...value };
+      }
+    );
     const handleFormItem = (index, formItem) => {
-      selectedItemIndex.value = index;
       store.commit("elePlusForm/setClickedIndex", index);
     };
     const deleteFormItem = (index) => {
@@ -62,6 +79,7 @@ export default defineComponent({
     };
     return {
       form,
+      formAttribute,
       formItems: computed(() => store.state.elePlusForm.formItems),
       selectedItemIndex,
       handleFormItem,

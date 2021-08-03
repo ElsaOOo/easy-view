@@ -29,43 +29,29 @@
         @change="setFormItemAttribute"
       />
     </el-form-item>
-    <!-- <el-form-item label="数据验证">
-      <el-checkbox
-        v-model="formItemAttribute.required"
-        label="true"
-        @change="setFormItemAttribute"
-      >
-        是否必填
-      </el-checkbox>
-      <el-select
-        v-model="formItemAttribute.type"
-        style="width: 150px"
-        clearable
-        placeholder="数据类型"
-        size="small"
-        @change="setFormItemAttribute"
-      >
-        <el-option
-          v-for="item in value_type_opts"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        />
-      </el-select>
-    </el-form-item> -->
   </el-form>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { useStore } from "vuex";
+import { cloneDeep } from "lodash-es";
 
 export default defineComponent({
   name: "form-item-attr",
   setup() {
     const store = useStore();
-    const formItemAttribute = computed(
-      () => store.state.elePlusForm.currentFormItem
+    let formItemAttribute = ref({
+      props: {},
+    });
+    watch(
+      () => store.state.elePlusForm.currentFormItem,
+      (newValue) => {
+        formItemAttribute.value = cloneDeep(newValue);
+      },
+      {
+        deep: true,
+      }
     );
     const itemsList = store.state.elePlusForm.formAssets.reduce((acc, cur) => {
       const temp = cur.specs.map((item) => ({
@@ -77,10 +63,8 @@ export default defineComponent({
     }, []);
 
     const setFormItemAttribute = () => {
-      console.log(formItemAttribute);
-
       store.commit("elePlusForm/updateFormItemAttr", {
-        ...formItemAttribute,
+        ...formItemAttribute.value,
       });
     };
     return {

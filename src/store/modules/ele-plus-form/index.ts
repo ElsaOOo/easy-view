@@ -2,8 +2,8 @@ import { Module, Store } from "vuex";
 import { genVueFileWrapper } from "./snippetVue3";
 import { RootState } from "../../types";
 const defaultProps = {
-  label: "",
-  value: "",
+  label: "表单label",
+  value: "prop",
   required: "",
   type: "",
 };
@@ -117,6 +117,7 @@ const elePlusForm: Module<State, RootState> = {
     addFormItem(this: Store<State>, state, newFormItem) {
       state.formItems.push(newFormItem);
       state.currentFormItem = newFormItem;
+      state.clickedIndex = state.clickedIndex + 1;
       this.commit("elePlusForm/genFromTemplate");
     },
     deleteFormItem(this: Store<State>, state, index) {
@@ -129,10 +130,14 @@ const elePlusForm: Module<State, RootState> = {
     },
     setClickedIndex(state: State, index) {
       state.clickedIndex = index;
+      state.currentFormItem = state.formItems[index];
     },
-    updateFormItemAttr(state: State, newFormItem) {
+    updateFormItemAttr(this: Store<State>, state: State, newFormItem) {
       const idx = state.clickedIndex;
-      state.formItems.splice(idx, 1, newFormItem);
+      const items = [...state.formItems];
+      items.splice(idx, 1, newFormItem);
+      state.formItems = items;
+      this.commit("elePlusForm/genFromTemplate");
     },
     resetForm(this: Store<State>, state) {
       state.formItems = [];
@@ -145,6 +150,7 @@ const elePlusForm: Module<State, RootState> = {
       const data = {
         ref: state.formAttribute.ref,
         model: state.formAttribute.model,
+        labelPosition: state.formAttribute.labelPosition,
         formItems: state.formItems,
       };
       state.srcCode = genVueFileWrapper(data);

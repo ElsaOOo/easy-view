@@ -1,8 +1,6 @@
 import genFormItemCode from "./snippetForm";
 
 export const _genFormItems = (model, formItems) => {
-  console.log("formItems", formItems);
-
   return formItems
     .map((item) => {
       const func = genFormItemCode(item.type);
@@ -13,25 +11,37 @@ export const _genFormItems = (model, formItems) => {
 
 const getRef = (value: string) => {
   if (value) {
-    return `ref=${value}`;
+    return `ref="${value}"`;
   }
   return "";
 };
 
-export const genVueFileWrapper = ({ model, ref, formItems }) => {
+const getLabelPosition = (value: string) => {
+  if (value) {
+    return `labelPosition="${value}"`;
+  }
+  return "";
+};
+
+export const genVueFileWrapper = ({ model, ref, formItems, labelPosition }) => {
   return `
 <template>
-  <el-form :model="${model}" ${ref} label-width="80px">
+  <el-form :model="${model}" ${getRef(
+    ref
+  )} label-width="80px" ${getLabelPosition(labelPosition)}>
     ${_genFormItems(model, formItems)}
     
   </el-form>
 </template>
 <script lang="ts">
-  import { defineComponent } from "vue";
+  import { defineComponent, reactive } from "vue";
 
   export default defineComponent({
     setup() {
-      return {};
+      const ${model} = reactive({})
+      return {
+        ${model}
+      };
     },
   });
 </script>
